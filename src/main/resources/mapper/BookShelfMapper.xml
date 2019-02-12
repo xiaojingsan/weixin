@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.library.mapper.BookShelfMapper" >
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.library.entity.BookShelf">
+        <result column="bookshelfID" property="bookshelfID" />
+        <result column="bookshelfName" property="bookshelfName" />
+    </resultMap>
+
+    <insert id="addBookShelf" parameterType="com.example.library.entity.BookShelf">
+        insert into BookShelf_table VALUES (#{bookshelfID},#{bookshelfName})
+    </insert>
+
+    <select id="queryAll" resultType="com.example.library.entity.BookShelf">
+        SELECT  *  from  BookShelf_table
+    </select>
+
+    <select id="queryBookShelf" parameterType="com.example.library.entity.BookShelf" resultType="com.example.library.entity.BookShelf">
+        select  *  from  BookShelf_table
+        <where>
+            <if test="bookshelfID != null ">
+                bookshelfID=#{bookshelfID}
+            </if>
+            <if test="bookshelfName != null ">
+                and bookshelfName=#{bookshelfName}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteBookShelf" parameterType="String">
+        delete from  BookShelf_table where bookshelfID in
+        <foreach item="iditem" collection="array" open="(" separator="," close=")">
+            #{iditem}
+        </foreach>
+    </delete>
+
+    <update id="updateBookShelf" parameterType="com.example.library.entity.BookShelf">
+        update BookShelf_table
+        <set>
+            <if test="bookshelfName != null">
+                bookshelfName=#{bookshelfName},
+            </if>
+        </set>
+        where bookshelfID=#{bookshelfID}
+    </update>
+
+</mapper>

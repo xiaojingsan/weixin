@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.library.mapper.TicketMapper" >
+    <resultMap id="BaseResultMap" type="com.example.library.entity.Ticket">
+        <result column="ticketID" property="ticketID" />
+        <result column="userID" property="userID" />
+        <result column="ticketPrice" property="ticketPrice" />
+        <result column="ticketReason" property="ticketReason" />
+    </resultMap>
+    <insert id="addTicket" parameterType="com.example.library.entity.Ticket">
+        insert into ticket_table VALUES (#{ticketID},#{userID},#{ticketPrice},#{ticketReason})
+    </insert>
+
+    <select id="queryAll" resultType="com.example.library.entity.Ticket">
+        SELECT  *  from  ticket_table
+    </select>
+
+    <select id="queryTicket" parameterType="com.example.library.entity.Ticket" resultType="com.example.library.entity.Ticket">
+        select  *  from  ticket_table
+        <where>
+            <if test="ticketID != null ">
+                ticketID=#{ticketID}
+            </if>
+            <if test="userID != null ">
+                and userID=#{userID}
+            </if>
+            <if test="ticketPrice != null ">
+                and ticketPrice=#{ticketPrice}
+            </if>
+            <if test="ticketReason != null ">
+                and ticketReason=#{ticketReason}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteTicket" parameterType="String">
+        delete from  ticket_table where ticketID in
+        <foreach item="iditem" collection="array" open="(" separator="," close=")">
+            #{iditem}
+        </foreach>
+    </delete>
+    <delete id="deleteTicketByID" parameterType="com.example.library.entity.Ticket">
+        delete  from  ticket_table where  ticketID=#{ticketID}
+    </delete>
+
+    <update id="updateTicket" parameterType="com.example.library.entity.Ticket">
+        update ticket_table
+        <set>
+
+            <if test="userID != null">
+                userID=#{userID},
+            </if>
+            <if test="ticketPrice != null ">
+                and ticketPrice=#{ticketPrice}
+            </if>
+            <if test="ticketReason != null ">
+                and ticketReason=#{ticketReason}
+            </if>
+        </set>
+        where ticketID=#{ticketID}
+    </update>
+
+</mapper>

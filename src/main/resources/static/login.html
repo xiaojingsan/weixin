@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="jquery.js"></script>
+<script>
+    function login() {
+        $.ajax({
+            url: '/user/login',
+            type: 'get',
+            dataType: 'text',
+            data: {"userNumber": $('#userNumber').val(), "userPassword": $('#userPassword').val()},
+            success: function (d) {
+                    window.location.href = 'book.html';
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("不存在该用户"); // 200
+                alert(XMLHttpRequest.status); // 200
+                alert(textStatus); // parsererror
+                alert(errorThrown); // SyntaxError: Unexpected end of input
+            }
+        })
+    }
+
+
+</script>
+<body background="/img/back.jpg" style="background-repeat: no-repeat;background-size: auto">
+     <p> 输入借阅证</p>
+     <form >
+         <table >
+             <tr>
+                 <td>工号</td>
+                 <td><input type="text" id="userNumber"></td>
+             </tr>
+             <tr>
+                 <td>密 码</td>
+                 <td><input type="password" id="userPassword" ></td>
+             </tr>
+             <tr>
+                 <td colspan="2">
+                     <input type="button" onclick="login()" value="登陆">
+                     <!--<input type="submit"  value="登陆">-->
+                 </td>
+             </tr>
+         </table>
+     </form>
+</body>
+</html>

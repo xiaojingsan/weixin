@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.library.mapper.PositionMapper" >
+    <resultMap id="BaseResultMap" type="com.example.library.entity.Position">
+        <result column="positionID" property="positionID" />
+        <result column="bookID" property="bookID" />
+        <result column="bookshelfID" property="bookshelfID" />
+    </resultMap>
+
+    <insert id="addPosition" parameterType="com.example.library.entity.Position">
+        insert into Position_table VALUES (#{positionID},#{bookID},#{bookshelfID})
+    </insert>
+
+    <select id="queryAll" resultType="com.example.library.entity.Position">
+        SELECT  *  from  Position_table
+    </select>
+
+    <select id="queryPosition" parameterType="com.example.library.entity.Position" resultType="com.example.library.entity.Position">
+        select  *  from  Position_table
+        <where>
+            <if test="positionID != null ">
+                positionID=#{positionID}
+            </if>
+            <if test="bookID != null ">
+                and bookID=#{bookID}
+            </if>
+            <if test="bookshelfID != null ">
+                and bookshelfID=#{bookshelfID}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deletePosition" parameterType="String">
+        delete from  Position_table where positionID in
+        <foreach item="iditem" collection="array" open="(" separator="," close=")">
+            #{iditem}
+        </foreach>
+    </delete>
+    <delete id="deletePositionById" parameterType="com.example.library.entity.Position">
+        delete  from  Position_table where  positionID=#{positionID}
+    </delete>
+
+    <update id="updatePosition" parameterType="com.example.library.entity.Position">
+        update Position_table
+        <set>
+            <if test="bookID != null">
+                bookID=#{bookID},
+            </if>
+            <if test="bookshelfID != null">
+                bookshelfID=#{bookshelfID},
+            </if>
+        </set>
+        where positionID=#{positionID}
+    </update>
+
+
+</mapper>

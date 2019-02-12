@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.library.mapper.UserMapper" >
+    <!--resultMap对应的是表与实体类的映射  - type 数据库表对应的实体类，别名或完整类名都可以-->
+    <resultMap id="ResultMap" type="com.example.library.entity.User" >
+        <!-- 结果集的主键 -->
+        <id column="userID" property="userID" jdbcType="VARCHAR" />
+        <!-- 普通的列  -column 是数据库中字段， property是实体类中字段-->
+        <result column="userNumber" property="userNumber" jdbcType="VARCHAR" />
+        <result column="userName" property="userName" jdbcType="VARCHAR" />
+        <result column="userPassword" property="userPassword" jdbcType="VARCHAR" />
+        <result column="userSex" property="userSex" jdbcType="VARCHAR" />
+        <result column="userDepartment" property="userDepartment" jdbcType="VARCHAR" />
+        <result column="userPhone" property="userPhone" jdbcType="VARCHAR" />
+        <result column="userEmail" property="userEmail" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <insert id="addUser" parameterType="com.example.library.entity.User">
+      insert into user_table VALUES (#{userID},#{userNumber},#{userName},#{userPassword},#{userSex}
+      ,#{userDepartment},#{userPhone},#{userEmail})
+    </insert>
+
+    <select id="queryAll" parameterType="com.example.library.entity.User" resultType="com.example.library.entity.User">
+      select * from user_table
+    </select>
+    <select id="queryUser" parameterType="com.example.library.entity.User" resultType="com.example.library.entity.User">
+        select * from user_table
+        <where>
+            <if test="userID != null ">
+                userID=#{userID}
+            </if>
+            <if test="userNumber != null ">
+                and userNumber=#{userNumber}
+            </if>
+            <if test="userName != null ">
+                and userName=#{userName}
+            </if>
+            <if test="userPassword != null ">
+                and userPassword=#{userPassword}
+            </if>
+            <if test="userSex != null ">
+               AND userSex=#{userSex}
+            </if>
+            <if test="userDepartment != null ">
+               and  userDepartment=#{userDepartment}
+            </if>
+            <if test="userPhone != null ">
+               and userPhone=#{userPhone}
+            </if>
+            <if test="userEmail != null ">
+              and  userEmail=#{userEmail}
+            </if>
+        </where>
+    </select>
+    <select id="login" parameterType="java.lang.String" resultType="com.example.library.entity.User">
+        select * from user_table where userNumber=#{userNumber} and userPassword=#{userPassword}
+    </select>
+    <delete id="deleteUser" parameterType="String">
+        delete from user_table where userID in
+        <foreach item="iditem" collection="array" open="(" separator="," close=")">
+            #{iditem}
+        </foreach>
+    </delete>
+    <update id="updateUser" parameterType="com.example.library.entity.User">
+        	update user_table
+        	<set>
+                <if test="userName != null">
+                    userName=#{userName},
+                </if>
+                <if test="userPassword != null">
+                    userPassword=#{userPassword},
+                </if>
+                <if test="userSex != null">
+                    userSex=#{userSex},
+                 </if>
+                <if test="userDepartment != null">
+                  userDepartment=#{userDepartment},
+                 </if>
+                <if test="userPhone != null">
+                    userPhone=#{userPhone},
+                </if>
+                <if test="userEmail != null">
+                    userEmail=#{userEmail},
+                </if>
+            </set>
+        where userID=#{userID}
+    </update>
+</mapper>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery.js"></script>
+</head>
+<body>
+<style>
+    #logo2{
+        height:100px;
+        width:100px;
+        border-width:10px;
+    }
+
+    #b2{
+        /*height:10px;*/
+        /*width:500px;*/
+
+        /*border-width:10px;*/
+
+    }
+
+</style>
+<body  >
+<div id="logo2">
+    <img src="img/logo.png" />
+</div >
+<div id="b2">
+    <form >
+        <input type="text" id="bookName">
+        <input type="button" onclick="fun1()" value="查询" >
+    </form>
+    <a href="borrow/queryOut">图书借阅统计</a>&nbsp;&nbsp;<span>|</span>
+    <a href="count/code">查看统计二维码</a>
+
+    <table id="bookTable" width="1000" border="1"   align="center" cellspacing="0" cellpadding="0" style="border-color: azure">
+        <tr>
+            <th width="70px">书名</th>
+            <th width="70px">类型</th>
+            <th width="70px">作者</th>
+            <th width="70px">出版社</th>
+            <th width="70px">书本描述</th>
+            <th width="70px">价格</th>
+            <th width="70px">入馆时间</th>
+            <th width="70px">图书状态</th>
+            <th width="70px">编辑</th>
+        </tr>
+    </table>
+</div>
+<script>
+    function fun1(){
+        alert("123");
+        $.ajax({
+            url: '/book/select',
+            type: 'get',
+            data: {"bookName": $('#bookName').val()},
+            dataType: 'json',
+            success: function (data) {
+                $.each(data,function (index, item){
+                    var $delete = $('<a>').text('删除 ').attr('href', 'book/delete?bookID=' + item.bookID,"onclick","delete_confirm()");
+                    var $update = $('<a>').text('修改 ').attr('href', 'updatebook.html?bookID='+item.bookID);
+                    var $handleTd = $('<td>').append($update).append($delete);
+                    var $tr =$('<tr>')
+                     .append($('<td>'+ item.bookName + '</td>'))
+                        .append($('<td>'+ item.bookType + '</td>'))
+                        .append($('<td>'+ item.bookAuthor + '</td>'))
+                        .append($('<td>'+ item.bookPublish + '</td>'))
+                        .append($('<td>'+ item.bookDescribe + '</td>'))
+                        .append($('<td>'+ item.bookPrice + '</td>'))
+                        .append($('<td>'+ item.bookEnterTime + '</td>'))
+                        .append($('<td>'+ item.bookStatus + '</td>'))
+                        .append($handleTd);
+                    $tr.appendTo("#bookTable");
+                })
+            }
+    })
+    }
+</script>
+
+
+<script>
+    function delete_confirm(e)
+    {
+        if (event.srcElement.outerText == "删除")
+        {
+            event.returnValue = confirm("您确定删除该图书吗?");
+        }
+    }
+    document.onclick = delete_confirm;
+</script>
+</body>
+</html>

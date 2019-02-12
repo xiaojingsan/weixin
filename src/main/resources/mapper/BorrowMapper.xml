@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.example.library.mapper.BorrowMapper" >
+
+    <resultMap id="BaseResultMap" type="com.example.library.entity.Borrow">
+        <result column="borrowID" property="borrowID" />
+        <result column="borrowTime" property="borrowTime" />
+        <result column="userID" property="userID" />
+        <result column="userName" property="userName" />
+        <result column="userNumber" property="userNumber" />
+        <result column="bookID" property="bookID" />
+        <result column="bookName" property="bookName" />
+        <result column="bookType" property="bookType" />
+    </resultMap>
+
+
+    <insert id="addBorrowRecord"  parameterType="com.example.library.entity.Borrow" useGeneratedKeys="true" >
+        INSERT   into borrow_table  values(#{borrowID},#{bookID},#{userID},#{borrowTime})
+    </insert>
+    <select id="findAllBorrowRecords"  resultMap="BaseResultMap">
+       SELECT  *  from borrow_table br,user_table u,book_table b
+       where br.bookID=b.bookID
+       and br.userID=u.userID
+    </select>
+    <select id="queryBookNameCount"  resultType="String">
+         SELECT bookName
+         from borrow_table ,book_table
+         where borrow_table.bookID = book_table.bookID
+         GROUP BY book_table.bookName
+    </select>
+    <select id="queryBookCount"  resultType="int">
+        SELECT count(*) from  borrow_table
+        GROUP BY bookId
+    </select>
+    <!--<select id="queryBookNameCount"  resultType="String">-->
+        <!--SELECT count(*) from  borrow_table-->
+        <!--GROUP BY bookId-->
+    <!--</select>-->
+    <select id="queryBorrowRecords" parameterType="com.example.library.entity.Borrow" resultType="com.example.library.entity.Borrow">
+        select * from borrow_table
+        <where>
+            <if test="borrowID != null ">
+                borrowID=#{borrowID}
+            </if>
+            <if test="borrowTime != null ">
+                and borrowTime=#{borrowTime}
+            </if>
+            <if test="userID != null ">
+                and userID=#{userID}
+            </if>
+            <if test="bookID != null ">
+                and bookID=#{bookID}
+            </if>
+
+        </where>
+    </select>
+
+    <select id="queryBorrowRecordsByBookID" parameterType="com.example.library.entity.Borrow" resultType="com.example.library.entity.Borrow">
+        select * from borrow_table
+        <where>
+            <if test="bookID != null ">
+                bookID=#{bookID}
+            </if>
+
+        </where>
+    </select>
+
+
+</mapper>

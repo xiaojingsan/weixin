@@ -1,0 +1,74 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>修改</title>
+</head>
+<body>
+<form method="put" action="/book/update?bookID="+bookID>
+<table id="table" border="1" align="center" cellspacing="0" cellpadding="0">
+    <tr>
+        <td >书名</td>
+        <td ><input type="text" name="bookName"></td>
+    </tr>
+    <tr>
+        <td >类型</td>
+        <td ><select name="bookType">
+            <option value="java相关">java相关</option>
+            <option value="数据库相关">数据库相关</option>
+            <option value="spring相关">spring相关</option>
+            <option value="mybatis相关">mybatis相关</option>
+            <option value="redis相关">redis相关</option>
+            <option value="git相关">git相关</option>
+            <option value="Tomcat相关">Tomcat相关</option>
+
+        </select>
+        </td>
+    </tr>
+    <tr>
+        <td ><input type="text" name="bookID" ></td>
+        <td >作者</td>
+        <td ><input type="text" name="bookAuthor" ></td>
+
+    </tr>
+    <tr>
+        <td >出版社</td>
+        <td ><input type="text" name="bookPublish"></td>
+    </tr>
+    <tr>
+        <td >描述</td>
+        <td ><input type="text" name="bookDescribe"></td>
+    </tr>
+    <tr>
+        <td >价格</td>
+        <td ><input type="text" name="bookPrice"></td>
+    </tr>
+    <tr>
+        <td >入馆时间</td>
+        <td ><input type="date" name="bookEnterTime"></td>
+    </tr>
+    <tr>
+        <td >数量</td>
+        <td ><input type="text" name="bookNumber"></td>
+    </tr>
+  <tr>
+        <td >状态</td>
+        <td >
+          <select name="bookStatus">
+              <option value="在馆">在馆</option>
+              <option value="借出">借出</option>
+              <option value="丢失">丢失</option>
+          </select>
+        </td>
+    </tr>
+
+    <tr>
+        <td ></td>
+        <td > <input type="submit" value="提交" >
+        <input type="reset" name="取消"></td>
+    </tr>
+</table>
+</form>
+</body>
+</html>

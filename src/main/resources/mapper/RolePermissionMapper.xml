@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.library.mapper.RolePermissionMapper" >
+    <!--resultMap对应的是表与实体类的映射  - type 数据库表对应的实体类，别名或完整类名都可以-->
+    <resultMap id="ResultMap" type="com.example.library.entity.RolePermission" >
+        <!-- 结果集的主键 -->
+        <id column="userRoleID" property="userRoleID" jdbcType="VARCHAR" />
+        <!-- 普通的列  -column 是数据库中字段， property是实体类中字段-->
+        <result column="userID" property="userID" jdbcType="VARCHAR" />
+        <result column="roleID" property="roleID" jdbcType="VARCHAR" />
+
+    </resultMap>
+    <insert id="addRolePermission" parameterType="com.example.library.entity.RolePermission">
+        insert into role_permission_table VALUES (#{rolePermissionID},#{roleID},#{permissionID})
+    </insert>
+    <select id="queryAll" parameterType="com.example.library.entity.RolePermission" resultType="com.example.library.entity.RolePermission">
+        select * from role_permission_table
+    </select>
+    <select id="queryRolePermission" parameterType="com.example.library.entity.RolePermission" resultType="com.example.library.entity.RolePermission">
+        select * from role_permission_table
+        <where>
+            <if test="rolePermissionID != null">
+                rolePermissionID=#{rolePermissionID}
+            </if>
+            <if test="roleID != null">
+                AND  roleID=#{roleID}
+            </if>
+            <if test="permissionUrl != null">
+                AND  permissionID=#{permissionID}
+            </if>
+        </where>
+    </select>
+    <update id="updateRolePermission" parameterType="com.example.library.entity.RolePermission">
+        update role_permission_table
+        <set>
+            <if test="roleID != null">
+                roleID=#{roleID},
+            </if>
+            <if test="permissionID != null">
+                permissionID=#{permissionID},
+            </if>
+        </set>
+        where rolePermissionID=#{rolePermissionID}
+    </update>
+
+    <delete id="deleteRolePermission" parameterType="String">
+        delete from role_permission_table where rolePermissionID in
+        <foreach item="iditem" collection="array" open="(" separator="," close=")">
+            #{iditem}
+        </foreach>
+    </delete>
+    
+</mapper>

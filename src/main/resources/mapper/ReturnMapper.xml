@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.library.mapper.ReturnMapper" >
+
+    <resultMap id="BaseResultMap" type="com.example.library.entity.Return">
+        <result column="returnID" property="returnID" />
+        <result column="bookID" property="bookID" />
+        <result column="bookName" property="bookName" />
+        <result column="bookType" property="bookType" />
+        <result column="userID" property="userID" />
+        <result column="userName" property="userName" />
+        <result column="userNumber" property="userNumber" />
+        <result column="returnTime" property="returnTime" />
+        <result column="overTime" property="overTime" />
+    </resultMap>
+    <insert id="addReturnRecord"  parameterType="com.example.library.entity.Return" useGeneratedKeys="true" >
+        INSERT   into return_table  values(#{returnID},#{bookID},#{userID},#{returnTime},#{overTime})
+    </insert>
+    <select id="findAllReturnRecords"  resultMap="BaseResultMap">
+        SELECT  *  from return_table re,user_table u,book_table b
+        where re.bookID=b.bookID
+        and re.userID=u.userID
+    </select>
+
+    <select id="queryReturnRecords" parameterType="com.example.library.entity.Return" resultType="com.example.library.entity.Return">
+        select * from return_table
+        <where>
+            <if test="returnID != null ">
+                returnID=#{returnID}
+            </if>
+            <if test="returnTime != null ">
+                and returnTime=#{returnTime}
+            </if>
+            <if test="userID != null ">
+                and userID=#{userID}
+            </if>
+            <if test="bookID != null ">
+                and bookID=#{bookID}
+            </if>
+            <if test="overTime != null ">
+                and overTime=#{overTime}
+            </if>
+
+        </where>
+    </select>
+    <update id="updateReturnRecord" parameterType="com.example.library.entity.Return">
+        update return_table
+        <set>
+            <if test="bookID != null">
+                bookID=#{bookID},
+            </if>
+            <if test="userID != null">
+                userID=#{userID},
+            </if>
+            <if test="returnTime != null">
+                returnTime=#{returnTime},
+            </if>
+            <if test="overTime != null">
+                overTime=#{overTime},
+            </if>
+
+        </set>
+        where returnID=#{returnID}
+    </update>
+</mapper>
